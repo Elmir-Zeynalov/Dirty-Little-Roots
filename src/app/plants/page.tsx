@@ -2,7 +2,20 @@ import Link from 'next/link'
 import { type SanityDocument } from 'next-sanity'
 import { client } from '../../sanity/client'
 
-const PLANTS_QUERY = `*[_type == "plant"]{
+//const PLANTS_QUERY = `*[_type == "plant"]{
+//   _id,
+//   name,
+//   slug,
+//   description,
+//   "imageUrl": image.asset->url,
+//   careGuide->{
+//     title,
+//     watering,
+//     sunlight
+//   }
+// }`
+
+const PLANTS_QUERY = `*[_type == "plant" && defined(slug.current)]{
   _id,
   name,
   slug,
@@ -29,15 +42,17 @@ export default async function IndexPage() {
       <ul className="space-y-6">
         {plants.map((plant: any) => (
           <li key={plant._id} className="rounded-lg border p-4 shadow-sm">
-            {plant.imageUrl && (
-              <img
-                src={plant.imageUrl}
-                alt={plant.name}
-                className="mb-3 h-48 w-full rounded-md object-cover"
-              />
-            )}
+            <Link href={`/plants/${plant.slug.current}`}>
+              {plant.imageUrl && (
+                <img
+                  src={plant.imageUrl}
+                  alt={plant.name}
+                  className="mb-3 h-48 w-full rounded-md object-cover"
+                />
+              )}
 
-            <h3 className="text-xl font-semibold">{plant.name}</h3>
+              <h3 className="text-xl font-semibold">{plant.name}</h3>
+            </Link>
             <p className="text-gray-700">{plant.description}</p>
           </li>
         ))}
