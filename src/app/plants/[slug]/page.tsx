@@ -23,6 +23,46 @@ type PlantPageProps = {
   params: Promise<{ slug: string }>
 }
 
+// const portableTextComponents: PortableTextComponents = {
+//   block: {
+//     // Normal paragraphs
+//     normal: ({ children }) => <p className="mb-3 leading-relaxed text-gray-200">{children}</p>,
+//     // Example custom heading inside fact text
+//     h2: ({ children }) => (
+//       <h2 className="mt-6 mb-2 text-xl font-semibold text-emerald-300">{children}</h2>
+//     ),
+//   },
+//   marks: {
+//     // Bold text
+//     strong: ({ children }) => (
+//       <strong className="font-semibold text-emerald-200">{children}</strong>
+//     ),
+//     // Links
+//     link: ({ value, children }) => {
+//       const href = value?.href || '#'
+//       const isExternal = href.startsWith('http')
+//       return (
+//         <a
+//           href={href}
+//           target={isExternal ? '_blank' : undefined}
+//           rel={isExternal ? 'noreferrer noopener' : undefined}
+//           className="underline decoration-emerald-400 underline-offset-2 hover:text-emerald-300"
+//         >
+//           {children}
+//         </a>
+//       )
+//     },
+//   },
+//   list: {
+//     bullet: ({ children }) => (
+//       <ul className="my-3 ml-6 list-disc space-y-1 text-gray-200">{children}</ul>
+//     ),
+//     number: ({ children }) => (
+//       <ol className="my-3 ml-6 list-decimal space-y-1 text-gray-200">{children}</ol>
+//     ),
+//   },
+// }
+
 const portableTextComponents: PortableTextComponents = {
   block: {
     // Normal paragraphs
@@ -33,11 +73,9 @@ const portableTextComponents: PortableTextComponents = {
     ),
   },
   marks: {
-    // Bold text
     strong: ({ children }) => (
       <strong className="font-semibold text-emerald-200">{children}</strong>
     ),
-    // Links
     link: ({ value, children }) => {
       const href = value?.href || '#'
       const isExternal = href.startsWith('http')
@@ -59,6 +97,18 @@ const portableTextComponents: PortableTextComponents = {
     ),
     number: ({ children }) => (
       <ol className="my-3 ml-6 list-decimal space-y-1 text-gray-200">{children}</ol>
+    ),
+  },
+  types: {
+    factBox: ({ value }) => (
+      <aside className="mt-4 rounded-xl border border-yellow-600/40 bg-yellow-900/30 p-3 text-sm text-yellow-100">
+        {value.title && (
+          <h3 className="mb-1 text-xs font-semibold tracking-wide text-yellow-300 uppercase">
+            {value.title}
+          </h3>
+        )}
+        {value.body && <p className="text-xs leading-relaxed">{value.body}</p>}
+      </aside>
     ),
   },
 }
