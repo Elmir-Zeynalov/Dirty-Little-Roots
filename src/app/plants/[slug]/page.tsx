@@ -15,7 +15,14 @@ const PLANT_QUERY = `*[_type == "plant" && slug.current == $slug][0]{
     soilType,
     fertilizer,
     difficulty
-  }
+  },
+  personality->{
+    _id,
+    title,
+    slug,
+    summary,
+    traits 
+    }
 }`
 
 // NOTE: params is a Promise in the latest Next.js
@@ -160,6 +167,48 @@ export default async function PlantPage({ params }: PlantPageProps) {
               </div>
             )}
           </dl>
+        </section>
+      )}
+      {plant.personality && (
+        <section className="mt-8 rounded-2xl border border-fuchsia-500/60 bg-gradient-to-br from-fuchsia-900/40 via-slate-900/60 to-emerald-900/40 p-5 shadow-[0_0_25px_rgba(236,72,153,0.35)]">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+            <h2 className="text-lg font-semibold text-fuchsia-100">
+              🔮 What this plant says about you: {plant.personality.title}
+            </h2>
+
+            {plant.personality.slug?.current && (
+              <a
+                href={`/personality/${plant.personality.slug.current}`}
+                className="text-xs font-medium tracking-wide text-fuchsia-300/80 uppercase underline underline-offset-4 hover:text-fuchsia-100"
+              >
+                View full reading
+              </a>
+            )}
+          </div>
+
+          {plant.personality.summary && (
+            <p className="mt-3 text-sm leading-relaxed text-fuchsia-50/90">
+              {plant.personality.summary}
+            </p>
+          )}
+
+          {plant.personality.traits && plant.personality.traits.length > 0 && (
+            <div className="mt-4">
+              <h3 className="mb-2 text-xs font-semibold tracking-wide text-fuchsia-200/80 uppercase">
+                Personality traits this plant exposes:
+              </h3>
+              <ul className="flex flex-wrap gap-2">
+                {plant.personality.traits.map((trait: string) => (
+                  <li
+                    key={trait}
+                    className="rounded-full border border-fuchsia-400/70 bg-black/40 px-3 py-1 text-xs font-medium text-fuchsia-100"
+                  >
+                    {trait}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
       )}
     </main>
